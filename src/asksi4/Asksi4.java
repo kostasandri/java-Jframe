@@ -16,7 +16,6 @@ public class Asksi4 {
      */
     public static void main(String[] args) {
         (new Frame()).setVisible(true);
-        //here should something happen
     }
     
 }
