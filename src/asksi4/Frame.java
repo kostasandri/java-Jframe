@@ -5,17 +5,49 @@
  */
 package asksi4;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+
 /**
  *
  * @author Konstantinos
  */
 public class Frame extends javax.swing.JFrame {
 
+    private static DefaultListModel listModel1 = new DefaultListModel();        //η πρωτη λιστα
+    private static DefaultListModel listModel2 = new DefaultListModel();        //η δευτερη λιστα
+    private static DefaultListModel listModel3 = new DefaultListModel();        //η λιστα με το φιλτρο
+
     /**
      * Creates new form Frame
      */
     public Frame() {
+        for (int i = 0; i < 100; i++) {
+            listModel1.addElement("Τιμή " + (i + 1));
+        }
         initComponents();
+        jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        if (listModel1.isEmpty()) {
+            jButton1.setEnabled(false);
+        } else {
+            jButton1.setEnabled(true);
+        }
+        if (listModel2.isEmpty()) {
+            jButton2.setEnabled(false);
+        } else {
+            jButton2.setEnabled(true);
+        }
+        if (listModel3.isEmpty()) {
+            jButton3.setEnabled(false);
+            jButton4.setEnabled(false);
+        }
+
+        listModel1.addListDataListener(new MyListDataListener());
+        listModel2.addListDataListener(new MyListDataListener());
+        listModel3.addListDataListener(new MyListDataListener());
     }
 
     /**
@@ -32,52 +64,80 @@ public class Frame extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(519, 386));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asksi4/right.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asksi4/icons/right.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asksi4/left.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asksi4/icons/left.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asksi4/up.png"))); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asksi4/icons/up.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asksi4/down.png"))); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/asksi4/icons/down.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
-        jTextField1.setText("jTextField1");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jList1.setModel(listModel1);
+        jScrollPane1.setViewportView(jList1);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane4.setViewportView(jTextArea2);
+        jList2.setModel(listModel2);
+        jList2.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList2ValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jList2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -87,32 +147,138 @@ public class Frame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(156, 156, 156)
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(153, 153, 153)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
-                            .addComponent(jScrollPane4))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        int[] indexNum = jList2.getSelectedIndices();
+        String text = jTextField1.getText();
+        jList2.clearSelection();
+        for (int i = 0; i < indexNum.length; i++) {
+            Object tempItem = listModel2.remove(indexNum[i] - i);
+            listModel1.addElement(tempItem);
+            String tempItemStr = (String) tempItem;
+            if (text.length() != 0 && tempItemStr.contains(text)) {
+                listModel3.addElement(tempItem);
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jList2ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList2ValueChanged
+        int[] indexNum = jList2.getSelectedIndices();
+
+        if (indexNum.length != 0) {
+            if ((indexNum[0] == 0) && (indexNum[indexNum.length - 1] == (listModel2.getSize() - 1))) {
+                jButton3.setEnabled(false);
+                jButton4.setEnabled(false);
+            } else if (indexNum[indexNum.length - 1] == (listModel2.getSize() - 1)) {
+                jButton3.setEnabled(true);
+                jButton4.setEnabled(false);
+            } else if (indexNum[0] == 0) {
+                jButton3.setEnabled(false);
+                jButton4.setEnabled(true);
+            } else {
+                jButton3.setEnabled(true);
+                jButton4.setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_jList2ValueChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (jList1.getModel() == listModel1) {
+            int[] indexNum = jList1.getSelectedIndices();
+            for (int i = 0; i < indexNum.length; i++) {
+                Object tempItem = listModel1.remove(indexNum[i] - i);
+                listModel2.addElement(tempItem);
+            }
+        } else {
+            Object[] valObj = jList1.getSelectedValues();
+            for (Object valObj1 : valObj) {
+                int index = listModel1.indexOf(valObj1);
+                int index2 = listModel3.indexOf(valObj1);
+                Object tempItem = listModel1.remove(index);
+                listModel3.remove(index2);
+                listModel2.addElement(tempItem);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int[] indexNum = jList2.getSelectedIndices();
+        int[] indexNum2 = new int[indexNum.length];
+        for (int i = 0; i < indexNum.length; i++) {
+            Object temp = listModel2.elementAt(indexNum[i] - 1);
+            Object current = listModel2.elementAt(indexNum[i]);
+            listModel2.setElementAt(current, indexNum[i] - 1);
+            listModel2.setElementAt(temp, indexNum[i]);
+            indexNum2[i] = indexNum[i] - 1;
+        }
+        jList2.setSelectedIndices(indexNum2);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        int[] indexNum = jList2.getSelectedIndices();
+        int[] indexNum2 = new int[indexNum.length];
+        for (int i = indexNum.length - 1; i >= 0; i--) {
+            Object temp = listModel2.elementAt(indexNum[i]);
+            Object current = listModel2.elementAt(indexNum[i] + 1);
+            listModel2.setElementAt(current, indexNum[i]);
+            listModel2.setElementAt(temp, indexNum[i] + 1);
+            indexNum2[i] = indexNum[i] + 1;
+        }
+        jList2.setSelectedIndices(indexNum2);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        String text = jTextField1.getText();
+        if (text.length() == 0) {
+            jList1.setModel(listModel1);
+            if (listModel1.isEmpty()) {
+                jButton1.setEnabled(false);
+            } else {
+                jButton1.setEnabled(true);
+            }
+        } else {
+            listModel3.removeAllElements();
+            Object[] temp = listModel1.toArray();
+            for (int i = 0; i < listModel1.getSize(); i++) {
+                if (temp[i].toString().contains(text)) {
+                    listModel3.addElement(temp[i]);
+                }
+            }
+            jList1.setModel(listModel3);
+            if (listModel3.isEmpty()) {
+                jButton1.setEnabled(false);
+            } else {
+                jButton1.setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
 
     /**
      * @param args the command line arguments
@@ -149,15 +315,50 @@ public class Frame extends javax.swing.JFrame {
         });
     }
 
+    class MyListDataListener implements ListDataListener {
+
+        public void intervalAdded(ListDataEvent e) {
+            if (jList1.getModel() == listModel1) {
+                if (listModel1.isEmpty()) {
+                    jButton1.setEnabled(false);
+                } else {
+                    jButton1.setEnabled(true);
+                }
+            } else if (jList1.getModel() == listModel3) {
+                if (listModel3.isEmpty()) {
+                    jButton1.setEnabled(false);
+                } else {
+                    jButton1.setEnabled(true);
+                }
+            }
+            if (listModel2.isEmpty()) {
+                jButton2.setEnabled(false);
+            } else {
+                jButton2.setEnabled(true);
+            }
+        }
+
+        @Override
+        public void intervalRemoved(ListDataEvent lde) {
+
+        }
+
+        @Override
+        public void contentsChanged(ListDataEvent lde) {
+
+        }
+
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
